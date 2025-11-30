@@ -7,6 +7,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // yeh dono use krna hota hai kyuki form se data post method kr rhe hai toh data store krne ke liye yeh dono likhna jroori hai .
 
+// css file ko chlane ke liye use krenge :
+app.use(express.static("public"));
+
 // 3 type ke middleware hote hai buitin, custom and thirdparty middleware yeh neeche wala custom hai .
 app.use((req, res, next) => {
   console.log("This is middleware");
