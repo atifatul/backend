@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const userModel = require("./models/user");
+const dbconnection = require("./config/db");
 
 app.set("view engine", "ejs");
 
@@ -32,8 +34,54 @@ app.get(
   }
 );
 
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+// Create user
+app.post("/register", async (req, res) => {
+  const { username, email, password } = req.body;
+  await userModel.create({
+    username: username,
+    email: email,
+    password: password,
+  });
+  res.send("User Registered");
+});
+
+// Read users
+app.get("/get-users", (req, res) => {
+  //   userModel.find().then((atul) => {
+  //     res.send(atul);
+  //   });
+  // Or
+  //   userModel.find({ username: "atul" }).then((user) => {
+  //     res.send(user);
+  //   });
+  // OR
+  userModel.findOne({ username: "Atifatul" }).then((user) => {
+    res.send(user);
+  });
+});
+
+// Update User
+app.get("/update-user", async (req, res) => {
+  await userModel.findOneAndUpdate(
+    { username: "Atifatul" },
+    { email: "mdatif.reyyani.cs.2021@mitmeerut.ac.in" }
+  );
+  res.send("User Updated");
+});
 app.all("/about", (req, res) => {
   res.status(404).send("Wrong try again");
+});
+
+// Delete User
+app.get("/delete-user", async (req, res) => {
+  await userModel.findOneAndDelete({
+    username: "atul",
+  });
+  res.send(`Username deleted`);
 });
 
 // Post methode frontend se server tk data laana ke liye use hota hai and
